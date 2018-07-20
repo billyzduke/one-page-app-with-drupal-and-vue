@@ -20,19 +20,18 @@
 
     <div v-else>
 
-  <div class="filter">
-      <input type="text" class="form-control" v-model="liveFilter">
-      <!-- <h4>Filter by Genre:</h4>
-      <div class="row">
-          <div class="col-md-6">
-              <select name="" id="" class="form-control" v-model="genreFilter">
-                  <option value="">All</option>
-                  <option v-for="genre in genres">{{ genre }}</option>
-              </select>
-          </div>
-      </div> -->
-  </div>
-  <!-- <p id="VerifyThatLiveFilterFormFieldTwoWayBindingIsWorking">{{ liveFilter }}</p> -->
+    <div class="filter">
+        <input type="text" class="form-control" v-model="liveFilter" placeholder="Search">
+        <h4>Filter by Genre:</h4>
+        <div class="row">
+            <div class="col-md-6">
+                <select name="" id="" class="form-control" v-model="genreFilter">
+                    <option value="">All</option>
+                    <option v-for="genre in genres">{{ genre }}</option>
+                </select>
+            </div>
+        </div>
+    </div>
 
     <div v-for="movie in moviesFiltered" class="row movie-item">
         <div class="col-md-2 pull">
@@ -55,6 +54,10 @@
                   <a :href="person.IMDb_page_URI" target="_blank">{{ person.name_full }}</a>
                 </li>
               </ul>
+            </p>
+            <p>
+              <strong>Genres:</strong>
+              <span>{{ movie.genres }}</span>
             </p>
         </div>
     </div>
@@ -233,6 +236,8 @@ new Vue({
     data () {
       return {
         movies: null,
+        genres: [],
+        genreFilter: '',
         loading: true,
         loadError: false,
         liveFilter: '',
@@ -258,14 +263,32 @@ new Vue({
           console.log(error)
           this.loadError = true
         })
-        .finally(() => this.loading = false)
+        .finally(() => {
+          var genres = []
+          var genresArr = []
+
+          this.movies.forEach((movie) => {
+            genres = movie.genres.split(', ')
+            genres.forEach((genre) => {
+              if (jQuery.inArray(genre, genresArr) === -1) {
+                genresArr.push(genre)
+              }
+            })
+          })
+
+          this.genres = genresArr
+          this.genres.sort()
+          console.log(this.genres)
+
+          this.loading = false
+        })
     },
 
     methods: {
       matchFilter (filterObj, movieNode, field) {
         if (filterObj.hasOwnProperty(field)) {
-          console.log('field: '+field);
-          console.log('movie: '+movieNode[field].toLowerCase()+' title contains '+this.loweredFilter+' '+(movieNode[field].toLowerCase().indexOf(this.loweredFilter) !== -1))
+//          console.log('field: '+field);
+//          console.log('movie: '+movieNode[field].toLowerCase()+' title contains '+this.loweredFilter+' '+(movieNode[field].toLowerCase().indexOf(this.loweredFilter) !== -1))
           return movieNode[field].toLowerCase().indexOf(this.loweredFilter) !== -1;
         }
         return false;
@@ -277,8 +300,14 @@ new Vue({
         return this.liveFilter.toLowerCase()
       },
       moviesFiltered () {
+        var filteredMovies = this.movies;
+        if (this.genreFilter.length) {
+          filteredMovies = filteredMovies.filter((movie) => {
+            return movie.genres.indexOf(this.genreFilter) !== -1;
+          })
+        }
         if (this.liveFilter.length) {
-          return this.movies.filter((movie) => {
+          return filteredMovies.filter((movie) => {
             var matchFound = false;
             for (var k in this.filterBy) {
               if (!matchFound) {
@@ -300,7 +329,7 @@ new Vue({
             return matchFound;
           })
         }
-        return this.movies;
+        return filteredMovies;
       }
     }
 
