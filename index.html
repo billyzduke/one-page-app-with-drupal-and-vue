@@ -2,70 +2,91 @@
 <html>
 <head>
     <title>Movies App</title>
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <!-- <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"> -->
+    <link rel="stylesheet" href="//stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="/css/style.css?suckdick">
 </head>
 <body>
 
 <div class="container" id="app">
 
-  <h1>MOVIES</h1>
+  <section class="movie-list" v-show="!movie">
 
-  <section v-if="loadError">
-    <p>We're sorry, we're not able to retrieve this information at the moment, please try back later</p>
+    <h1>MOVIES</h1>
+
+    <section v-if="loadError">
+      <p>We're sorry, we're not able to retrieve this information at the moment, please try back later</p>
+    </section>
+
+    <section v-else>
+      <div v-if="loading">Loading...</div>
+
+      <div v-else>
+
+      <div class="filter">
+          <input type="text" class="form-control" v-model="liveFilter" placeholder="Search">
+          <h4>Filter by Genre:</h4>
+          <div class="row">
+              <div class="col-md-6">
+                  <select name="" id="" class="form-control" v-model="genreFilter">
+                      <option value="">All</option>
+                      <option v-for="genre in genres">{{ genre }}</option>
+                  </select>
+              </div>
+          </div>
+      </div>
+
+      <div v-for="(movie, i) in moviesFiltered" class="row movie-item">
+          <div class="col-md-2 pull">
+              <!-- <a :href="movie.IMDb_page_URI" target="_blank"><img :src="movie.IMDb_poster_URI" width="100" :alt="movie.title" :title="movie.title" /></a> -->
+              <a @click="viewMovie(i)"><img :src="movie.IMDb_poster_URI" width="100" :alt="movie.title" :title="movie.title" /></a>
+          </div>
+          <div class="col-md-9">
+              <!-- <h4><a :href="movie.IMDb_page_URI" target="_blank">{{ movie.title }}</h4> -->
+              <h4><a @click="viewMovie(i)">{{ movie.title }}</a></h4>
+              <p>
+                <strong>Director:</strong>
+                <ul>
+                  <li v-for="person in movie.directors">
+                    <a :href="person.IMDb_page_URI" target="_blank">{{ person.name_full }}</a>
+                  </li>
+                </ul>
+              </p>
+              <p>
+                <strong>Cast:</strong>
+                <ul>
+                  <li v-for="person in movie.cast">
+                    <a :href="person.IMDb_page_URI" target="_blank">{{ person.name_full }}</a>
+                  </li>
+                </ul>
+              </p>
+              <p>
+                <strong>Genres:</strong>
+                <span>{{ movie.genres }}</span>
+              </p>
+          </div>
+      </div>
+
+      <!-- <router-view></router-view> -->
+
+    </div>
+
+    </section>
+
   </section>
 
-  <section v-else>
-    <div v-if="loading">Loading...</div>
-
-    <div v-else>
-
-    <div class="filter">
-        <input type="text" class="form-control" v-model="liveFilter" placeholder="Search">
-        <h4>Filter by Genre:</h4>
-        <div class="row">
-            <div class="col-md-6">
-                <select name="" id="" class="form-control" v-model="genreFilter">
-                    <option value="">All</option>
-                    <option v-for="genre in genres">{{ genre }}</option>
-                </select>
-            </div>
-        </div>
+  <section class="row single-movie" v-show="movie">
+    <div class="col-md-5">
+      <a :href="movie.IMDb_page_URI" target="_blank"><img :src="movie.IMDb_poster_URI" width="350" :alt="movie.title+' on IMDb.com'" :title="movie.title+' on IMDb.com'" /></a>
     </div>
-
-    <div v-for="movie in moviesFiltered" class="row movie-item">
-        <div class="col-md-2 pull">
-            <a :href="movie.IMDb_page_URI"><img :src="movie.IMDb_poster_URI" width="100" :alt="movie.title" :title="movie.title" /></a>
-        </div>
-        <div class="col-md-9">
-            <h4><a :href="movie.IMDb_page_URI" target="_blank">{{ movie.title }}</h4>
-            <p>
-              <strong>Director:</strong>
-              <ul>
-                <li v-for="person in movie.directors">
-                  <a :href="person.IMDb_page_URI" target="_blank">{{ person.name_full }}</a>
-                </li>
-              </ul>
-            </p>
-            <p>
-              <strong>Cast:</strong>
-              <ul>
-                <li v-for="person in movie.cast">
-                  <a :href="person.IMDb_page_URI" target="_blank">{{ person.name_full }}</a>
-                </li>
-              </ul>
-            </p>
-            <p>
-              <strong>Genres:</strong>
-              <span>{{ movie.genres }}</span>
-            </p>
-        </div>
+    <div class="col-md-7">
+      <h2>
+        <a :href="movie.IMDb_page_URI" :title="movie.title+' on IMDb.com'" target="_blank">{{ movie.title }}</a>
+      </h2>
+      <div v-html="movie.synopsis"></div>
+      <hr />
+      <button @click="movie=false" class="btn btn-danger float-right align-bottom">Back to Movie List</button>
     </div>
-
-    <!-- <router-view></router-view> -->
-
-  </div>
-
   </section>
 
 </div>
@@ -211,18 +232,19 @@
 <!-- <script src="//cdn.jsdelivr.net/npm/vue@1.0.11/dist/vue.min.js"></script> -->
 <!-- <script src="js/vue.js"></script> -->
 
-<!-- <script type="text/javascript" src="//cdn.jsdelivr.net/npm/vue-resource@1.5.1"></script> -->
-<!-- <script type="text/javascript" src="js/vue-resource.js"></script> -->
+<!-- <script src="//cdn.jsdelivr.net/npm/vue-resource@1.5.1"></script> -->
+<!-- <script src="js/vue-resource.js"></script> -->
 <!-- vue-resource is DEPRECATED in Vue 2.0, use third party AJAX solution instead -->
 <script src="//unpkg.com/axios/dist/axios.min.js"></script>
 
-<script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+<!-- <script src="//code.jquery.com/jquery-1.11.3.min.js"></script> -->
+<script src="//cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
 
-<!-- <script type="text/javascript" src="//unpkg.com/vue-router/dist/vue-router.js"></script> -->
-<!-- <script type="text/javascript" src="js/vue-router.js"></script> -->
+<!-- <script src="//unpkg.com/vue-router/dist/vue-router.js"></script> -->
+<!-- <script src="js/vue-router.js"></script> -->
 
 
-<!-- <script type="text/javascript" src="js/app.js"></script> -->
+<!-- <script src="js/app.js"></script> -->
 
 <script>
 
@@ -236,6 +258,7 @@ new Vue({
     data () {
       return {
         movies: null,
+        movie: false,
         genres: [],
         genreFilter: '',
         loading: true,
@@ -278,7 +301,7 @@ new Vue({
 
           this.genres = genresArr
           this.genres.sort()
-          console.log(this.genres)
+//          console.log(this.genres)
 
           this.loading = false
         })
@@ -292,6 +315,9 @@ new Vue({
           return movieNode[field].toLowerCase().indexOf(this.loweredFilter) !== -1;
         }
         return false;
+      },
+      viewMovie (i) {
+        this.movie = this.movies[i]
       }
     },
 

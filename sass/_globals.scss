@@ -35,6 +35,11 @@ body{
     margin-bottom:40px;
 }
 
+a:hover {
+    cursor: pointer !important;
+    text-decoration: underline !important;
+}
+
 
 /* =======================================================================
 ## ++ Cleafix
@@ -62,9 +67,3 @@ body{
 }
 
 .clr{clear:both;}
-
-
-
-
-
-
