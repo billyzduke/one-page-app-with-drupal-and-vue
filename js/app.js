@@ -1,5 +1,42 @@
-apiURL = "http://moviesapi.dev/api/movies"
+apiURL = "http://drupal-8-5-4.dd:8683/api/movies"
 
+Vue.config.devtools = true;
+
+new Vue({
+    el: '#app',
+
+    data: function() {
+        return {
+            movies: [],
+            liveFilter: ''
+        };
+    },
+
+    ready: function() {
+        this.getMovies();
+    },
+
+    methods: {
+        getMovies: function() {
+            this.$http.get(apiURL, function(movies){
+                this.$set('movies', movies);
+//              console.log(movies);
+            });
+        },
+        filteredMovies: function () {
+          var self = this;
+          return self.movies;
+          // .filter(function (movie) {
+          //   return (this.liveFilter.length) ? movie.name.indexOf(this.liveFilter) !== -1
+          // })
+        }
+    }
+
+});
+
+
+
+/*
 var App = Vue.extend({});
 
 var register = Vue.extend({
@@ -30,7 +67,7 @@ var register = Vue.extend({
             var data = {
                 '_links':{
                     'type' : {
-                        'href' : 'http://moviesapi.dev/rest/type/user/user'
+                        'href' : 'http://drupal-8-5-4.dd:8683/rest/type/user/user'
                     }
                 },
                 'name':[
@@ -60,7 +97,7 @@ var register = Vue.extend({
                 ]
             }
 
-            this.$http.post('http://moviesapi.dev/entity/user', data, function(response){
+            this.$http.post('http://drupal-8-5-4.dd:8683/entity/user', data, function(response){
                 this.$set('message', 'You have registered! Yaaaay! :)');
                 this.$set('success', true)
             }).error(function(response){
@@ -98,7 +135,7 @@ var editMovie = Vue.extend({
             var data = {
                 '_links':{
                     'type' : {
-                        'href' : 'http://moviesapi.dev/rest/type/node/movies'
+                        'href' : 'http://drupal-8-5-4.dd:8683/rest/type/node/movies'
                     }
                 },
                 'title':[
@@ -113,7 +150,7 @@ var editMovie = Vue.extend({
                 ]
             }
 
-            this.$http.patch('http://moviesapi.dev/node/' + this.$route.params.movieID, data, function(response){
+            this.$http.patch('http://drupal-8-5-4.dd:8683/node/' + this.$route.params.movieID, data, function(response){
                 this.$route.router.go('/');
             },{
                 headers:{
@@ -138,7 +175,7 @@ var deleteMovie = Vue.extend({
 
     methods:{
         deleteTheMovie: function(){
-            this.$http.delete('http://moviesapi.dev/node/' + this.$route.params.movieID, function(response){
+            this.$http.delete('http://drupal-8-5-4.dd:8683/node/' + this.$route.params.movieID, function(response){
                 this.$route.router.go('/');
             })
         }
@@ -174,7 +211,7 @@ var createMovie = Vue.extend({
             var data = {
                 '_links':{
                     'type' : {
-                        'href' : 'http://moviesapi.dev/rest/type/node/movies'
+                        'href' : 'http://drupal-8-5-4.dd:8683/rest/type/node/movies'
                     }
                 },
                 'title':[
@@ -189,7 +226,7 @@ var createMovie = Vue.extend({
                 ]
             }
 
-            this.$http.post('http://moviesapi.dev/entity/node', data, function(response){
+            this.$http.post('http://drupal-8-5-4.dd:8683/entity/node', data, function(response){
                 this.$set('success', 'ok');
                 this.$set('title', '');
                 this.$set('body', '');
@@ -220,7 +257,7 @@ var movieList = Vue.extend({
         getMovies: function(){
             this.$set('movie', '');
             this.$set('loading', true);
-            
+
             this.$http.get(apiURL, function(movies){
                 this.$set('loading', false);
                 this.$set('movies', movies);
@@ -237,7 +274,7 @@ var movieList = Vue.extend({
 
                 this.$set('genres', genresArr);
                 //console.log(JSON.stringify(genresArr));
-                
+
             });
         }
     }
@@ -246,7 +283,7 @@ var movieList = Vue.extend({
 var singleMovie = Vue.extend({
     template: '#single-movie-template',
 
-    data: function(){
+    data: function() {
         return {
             movie:'',
             loading: false
@@ -298,7 +335,7 @@ router.map({
 
 router.start(App, '#app');
 
-
+*/
 
 /*new Vue({
     el: '#app',
@@ -333,7 +370,7 @@ router.start(App, '#app');
 
                 this.$set('genres', genresArr);
                 //console.log(JSON.stringify(genresArr));
-                
+
             });
         },
 

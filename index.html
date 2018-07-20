@@ -9,12 +9,65 @@
 
 <div class="container" id="app">
 
-    
-    <router-view></router-view>
+  <h1>MOVIES</h1>
+
+  <section v-if="loadError">
+    <p>We're sorry, we're not able to retrieve this information at the moment, please try back later</p>
+  </section>
+
+  <section v-else>
+    <div v-if="loading">Loading...</div>
+
+    <div v-else>
+
+  <div class="filter">
+      <input type="text" class="form-control" v-model="liveFilter">
+      <!-- <h4>Filter by Genre:</h4>
+      <div class="row">
+          <div class="col-md-6">
+              <select name="" id="" class="form-control" v-model="genreFilter">
+                  <option value="">All</option>
+                  <option v-for="genre in genres">{{ genre }}</option>
+              </select>
+          </div>
+      </div> -->
+  </div>
+  <!-- <p id="VerifyThatLiveFilterFormFieldTwoWayBindingIsWorking">{{ liveFilter }}</p> -->
+
+    <div v-for="movie in moviesFiltered" class="row movie-item">
+        <div class="col-md-2 pull">
+            <a :href="movie.IMDb_page_URI"><img :src="movie.IMDb_poster_URI" width="100" :alt="movie.title" :title="movie.title" /></a>
+        </div>
+        <div class="col-md-9">
+            <h4><a :href="movie.IMDb_page_URI" target="_blank">{{ movie.title }}</h4>
+            <p>
+              <strong>Director:</strong>
+              <ul>
+                <li v-for="person in movie.directors">
+                  <a :href="person.IMDb_page_URI" target="_blank">{{ person.name_full }}</a>
+                </li>
+              </ul>
+            </p>
+            <p>
+              <strong>Cast:</strong>
+              <ul>
+                <li v-for="person in movie.cast">
+                  <a :href="person.IMDb_page_URI" target="_blank">{{ person.name_full }}</a>
+                </li>
+              </ul>
+            </p>
+        </div>
+    </div>
+
+    <!-- <router-view></router-view> -->
+
+  </div>
+
+  </section>
 
 </div>
 
-<template id="movie-list-template">
+<!-- <template id="movie-list-template">
 
     <a v-link="{ path : 'create' }" class="btn btn-success">Create new movie</a>
     <a v-link="{ path : 'register' }" class="btn btn-primary">Register</a>
@@ -33,7 +86,7 @@
         </div>
     </div>
 
-    
+
     <div v-show="loading" transition="loading">Content is loading. Please wait...</div>
 
     <div class="movie-list" v-show="!movie">
@@ -46,7 +99,7 @@
                 <p>
                     <strong>Director:</strong> {{ movie.field_director[0].value }}
                 </p>
-        
+
                 <strong>Actors:</strong><br>
                 <span v-for="actor in movie.field_actors">
                     {{ actor.value }}<br>
@@ -111,7 +164,7 @@
                 <label>Movie title</label>
                 <input type="text" v-model="title" name="title" value="{{ movieItem.title[0].value }}" class="form-control">
             </div>
-            
+
             <div class="form-group">
                 <label>Movie body</label>
                 <textarea v-model="body" class="form-control">{{ movieItem.body[0].value }}</textarea>
@@ -125,7 +178,7 @@
 
 <template id="register">
     <h2>Register</h2>
-    
+
     <div class="alert" v-bind:class="{ 'alert-success': success, 'alert-danger': error}"v-show="message">{{ message }}</div>
 
     <form v-on:submit="registerUser">
@@ -147,14 +200,462 @@
         <button type="submit" class="btn btn-success">Register</button>
     </form>
 
-</template>
+</template> -->
 
 
 
-<script type="text/javascript" src="js/vue.js"></script>
-<script type="text/javascript" src="js/vue-resource.js"></script>
-<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
-<script type="text/javascript" src="js/vue-router.js"></script>
-<script type="text/javascript" src="js/app.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<!-- <script src="//cdn.jsdelivr.net/npm/vue@1.0.11/dist/vue.min.js"></script> -->
+<!-- <script src="js/vue.js"></script> -->
+
+<!-- <script type="text/javascript" src="//cdn.jsdelivr.net/npm/vue-resource@1.5.1"></script> -->
+<!-- <script type="text/javascript" src="js/vue-resource.js"></script> -->
+<!-- vue-resource is DEPRECATED in Vue 2.0, use third party AJAX solution instead -->
+<script src="//unpkg.com/axios/dist/axios.min.js"></script>
+
+<script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+
+<!-- <script type="text/javascript" src="//unpkg.com/vue-router/dist/vue-router.js"></script> -->
+<!-- <script type="text/javascript" src="js/vue-router.js"></script> -->
+
+
+<!-- <script type="text/javascript" src="js/app.js"></script> -->
+
+<script>
+
+var apiURL = "http://drupal-8-5-4.dd:8683/api/movies"
+
+Vue.config.devtools = true;
+
+new Vue({
+    el: '#app',
+
+    data () {
+      return {
+        movies: null,
+        loading: true,
+        loadError: false,
+        liveFilter: '',
+        filterBy: {
+          'title': true,
+          'directors': {
+            'name_full': true
+          },
+          'cast': {
+            'name_full': true
+          }
+        }
+      };
+    },
+
+    mounted () {
+      axios
+        .get(apiURL)
+        .then(response => {
+          this.movies = response.data
+        })
+        .catch(error => {
+          console.log(error)
+          this.loadError = true
+        })
+        .finally(() => this.loading = false)
+    },
+
+    methods: {
+      matchFilter (filterObj, movieNode, field) {
+        if (filterObj.hasOwnProperty(field)) {
+          console.log('field: '+field);
+          console.log('movie: '+movieNode[field].toLowerCase()+' title contains '+this.loweredFilter+' '+(movieNode[field].toLowerCase().indexOf(this.loweredFilter) !== -1))
+          return movieNode[field].toLowerCase().indexOf(this.loweredFilter) !== -1;
+        }
+        return false;
+      }
+    },
+
+    computed: {
+      loweredFilter () {
+        return this.liveFilter.toLowerCase()
+      },
+      moviesFiltered () {
+        if (this.liveFilter.length) {
+          return this.movies.filter((movie) => {
+            var matchFound = false;
+            for (var k in this.filterBy) {
+              if (!matchFound) {
+                if (typeof this.filterBy[k] === 'object') {
+                  for (var kk in this.filterBy[k]) {
+                    if (!matchFound) {
+                      for (var f in movie[k]) {
+                        if (!matchFound) {
+                          matchFound = this.matchFilter(this.filterBy[k], movie[k][f], kk);
+                        }
+                      }
+                    }
+                  }
+                } else {
+                  matchFound = this.matchFilter(this.filterBy, movie, k);
+                }
+              }
+            }
+            return matchFound;
+          })
+        }
+        return this.movies;
+      }
+    }
+
+});
+
+
+
+/*
+var App = Vue.extend({});
+
+var register = Vue.extend({
+    template: '#register',
+
+    data: function(){
+        return {
+            name: '',
+            email: '',
+            password:'',
+            message: '',
+            success: '',
+            error: ''
+        }
+    },
+
+    http:{
+        headers:{
+            'Accept' : 'json',
+            'Content-Type' : 'application/hal+json',
+            'Authorization' : 'Basic aXZhbjpwYXNzd29yZA=='
+        }
+    },
+
+    methods: {
+        registerUser: function(event){
+            event.preventDefault();
+            var data = {
+                '_links':{
+                    'type' : {
+                        'href' : 'http://drupal-8-5-4.dd:8683/rest/type/user/user'
+                    }
+                },
+                'name':[
+                    {
+                        'value' : this.name
+                    }
+                ],
+                'mail':[
+                    {
+                        'value' : this.email
+                    }
+                ],
+                'pass':[
+                    {
+                        'value' : this.password
+                    }
+                ],
+                'status':[
+                    {
+                        'value' : '1'
+                    }
+                ],
+                'roles':[
+                    {
+                        'target_id' : 'administrator'
+                    }
+                ]
+            }
+
+            this.$http.post('http://drupal-8-5-4.dd:8683/entity/user', data, function(response){
+                this.$set('message', 'You have registered! Yaaaay! :)');
+                this.$set('success', true)
+            }).error(function(response){
+                this.$set('message', 'Something went wrong! Please check your info and try again.');
+                this.$set('error', true);
+            });
+        }
+    }
+})
+
+var editMovie = Vue.extend({
+    template: '#edit-movie',
+
+    data: function(){
+        return {
+            movie: '',
+            title: '',
+            body: ''
+        }
+    },
+
+    ready: function(){
+        this.getTheMovie();
+    },
+
+    methods: {
+        getTheMovie: function(){
+            this.$http.get(apiURL + '/' + this.$route.params.movieID, function(movie){
+                this.$set('movie', movie);
+            })
+        },
+
+        updateTheMovie: function(event){
+            event.preventDefault();
+            var data = {
+                '_links':{
+                    'type' : {
+                        'href' : 'http://drupal-8-5-4.dd:8683/rest/type/node/movies'
+                    }
+                },
+                'title':[
+                    {
+                        'value' : this.title
+                    }
+                ],
+                'body':[
+                    {
+                        'value' : this.body
+                    }
+                ]
+            }
+
+            this.$http.patch('http://drupal-8-5-4.dd:8683/node/' + this.$route.params.movieID, data, function(response){
+                this.$route.router.go('/');
+            },{
+                headers:{
+                    'Accept' : 'json',
+                    'Content-Type' : 'application/hal+json',
+                    'Authorization' : 'Basic aXZhbjpwYXNzd29yZA=='
+                }
+            });
+        }
+    }
+})
+
+var deleteMovie = Vue.extend({
+    template: '#delete-movie',
+    http:{
+        headers:{
+            'Accept' : 'json',
+            'Content-Type' : 'application/hal+json',
+            'Authorization' : 'Basic aXZhbjpwYXNzd29yZA=='
+        }
+    },
+
+    methods:{
+        deleteTheMovie: function(){
+            this.$http.delete('http://drupal-8-5-4.dd:8683/node/' + this.$route.params.movieID, function(response){
+                this.$route.router.go('/');
+            })
+        }
+    }
+});
+
+var createMovie = Vue.extend({
+    template: '#create-movie',
+
+    data: function(){
+        return {
+            title: '',
+            body: '',
+            success:''
+        }
+    },
+
+    http:{
+        headers:{
+            'Accept' : 'json',
+            'Content-Type' : 'application/hal+json',
+            'Authorization' : 'Basic aXZhbjpwYXNzd29yZA=='
+        }
+    },
+
+    ready: function(){
+        //this.createTheMovie();
+    },
+
+    methods: {
+        createTheMovie: function(event){
+            event.preventDefault();
+            var data = {
+                '_links':{
+                    'type' : {
+                        'href' : 'http://drupal-8-5-4.dd:8683/rest/type/node/movies'
+                    }
+                },
+                'title':[
+                    {
+                        'value' : this.title
+                    }
+                ],
+                'body':[
+                    {
+                        'value' : this.body
+                    }
+                ]
+            }
+
+            this.$http.post('http://drupal-8-5-4.dd:8683/entity/node', data, function(response){
+                this.$set('success', 'ok');
+                this.$set('title', '');
+                this.$set('body', '');
+            });
+        }
+    }
+})
+
+var movieList = Vue.extend({
+    template: '#movie-list-template',
+
+    data: function() {
+        return {
+            movies: '',
+            liveFilter: '',
+            genreFilter: '',
+            genres: '',
+            movie:'',
+            loading: false
+        }
+    },
+
+    ready: function(){
+        this.getMovies();
+    },
+
+    methods: {
+        getMovies: function(){
+            this.$set('movie', '');
+            this.$set('loading', true);
+
+            this.$http.get(apiURL, function(movies){
+                this.$set('loading', false);
+                this.$set('movies', movies);
+
+                genresArr=[];
+
+                jQuery.each(movies, function(index, movie){
+                    jQuery.each(movie.field_genres, function(index, genre){
+                        if(jQuery.inArray(genre.value, genresArr) === -1) {
+                            genresArr.push(genre.value);
+                        }
+                    });
+                });
+
+                this.$set('genres', genresArr);
+                //console.log(JSON.stringify(genresArr));
+
+            });
+        }
+    }
+})
+
+var singleMovie = Vue.extend({
+    template: '#single-movie-template',
+
+    data: function() {
+        return {
+            movie:'',
+            loading: false
+        }
+    },
+
+    ready: function(){
+        this.getTheMovie();
+    },
+
+    methods: {
+        getTheMovie: function(){
+            this.$set('loading', true);
+            this.$http.get(apiURL + '/' + this.$route.params.movieID, function(movie){
+                this.$set('loading', false);
+                this.$set('movie', movie);
+                console.log(JSON.stringify(movie));
+            })
+        }
+    }
+})
+
+
+var router = new VueRouter();
+
+router.map({
+    '/':{
+        component: movieList
+    },
+    'create':{
+        component: createMovie
+    },
+    'movie/:movieID':{
+        name: 'movie',
+        component: singleMovie
+    },
+    'delete/:movieID':{
+        name: 'delete',
+        component: deleteMovie
+    },
+    'edit/:movieID':{
+        name: 'edit',
+        component: editMovie
+    },
+    'register':{
+        component: register
+    },
+});
+
+router.start(App, '#app');
+
+*/
+
+/*new Vue({
+    el: '#app',
+
+    data: {
+        movies: '',
+        liveFilter: '',
+        genreFilter: '',
+        genres: '',
+        movie:''
+    },
+
+    ready: function(){
+        this.getMovies();
+    },
+
+    methods: {
+        getMovies: function(){
+            this.$set('movie', '');
+            this.$http.get(apiURL, function(movies){
+                this.$set('movies', movies);
+
+                genresArr=[];
+
+                jQuery.each(movies, function(index, movie){
+                    jQuery.each(movie.field_genres, function(index, genre){
+                        if(jQuery.inArray(genre.value, genresArr) === -1) {
+                            genresArr.push(genre.value);
+                        }
+                    });
+                });
+
+                this.$set('genres', genresArr);
+                //console.log(JSON.stringify(genresArr));
+
+            });
+        },
+
+        getTheMovie: function(movieID){
+            this.$http.get(apiURL + '/' + movieID, function(movie){
+                this.$set('movie', movie);
+                console.log(JSON.stringify(movie));
+            })
+        }
+    }
+})*/
+</script>
+
+
 </body>
 </html>
