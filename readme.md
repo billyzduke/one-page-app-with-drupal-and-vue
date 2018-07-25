@@ -1,3 +1,27 @@
-This is a repository for "One Page App With Drupal 8 and Vue.js" tutorial series. You can [check out the series here](http://watch-learn.com/series/one-page-app-with-drupal-and-vue/).
+# one-page-app-w-drupal8-vue2
 
-You can go to [releases](https://github.com/ivandoric/one-page-app-with-drupal-and-vue/releases) to download the code for most of the videos of the series. Releases are made per episode.
+> Vue.js demo with Drupal 8 REST API
+
+## Build Setup
+
+``` bash
+# install dependencies
+npm install
+
+# serve with hot reload at localhost:8080
+npm run dev
+
+# build for production with minification
+npm run build
+
+# build for production and view the bundle analyzer report
+npm run build --report
+
+# run unit tests
+npm run unit
+
+# run all tests
+npm test
+```
+
+For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
