@@ -3,6 +3,7 @@ import Router from 'vue-router'
 // import HelloWorld from '@/components/HelloWorld'
 import MovieList from '@/components/MovieList'
 import MovieDetail from '@/components/MovieDetail'
+import MovieCreate from '@/components/MovieCreate'
 
 Vue.use(Router)
 
@@ -14,6 +15,10 @@ export default new Router({
     //   component: HelloWorld
     // },
     {
+      path: '/create',
+      name: 'create',
+      component: MovieCreate
+    },
     {
       path: '/movie/:mid',
       name: 'movie',
