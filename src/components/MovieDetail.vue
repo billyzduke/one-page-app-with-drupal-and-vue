@@ -4,19 +4,16 @@
       <p>We're sorry, we're not able to retrieve this information at the moment, please try back later</p>
     </section>
 
-    <section v-else>
-      <div v-if="loading">
-        <div class="spinner">
-          <div class="bounce1"></div>
-          <div class="bounce2"></div>
-          <div class="bounce3"></div>
-        </div>
+    <section v-else-if="loading">
+      <div>
+        <loading-spinner />
       </div>
+    </section>
 
-      <div v-else class="row">
-
-        <div class="col-md-5">
-          <a :href="movie.IMDb_page_URI" target="_blank"><img :src="movie.IMDb_poster_URI" width="350" :alt="movie.title+' on IMDb.com'" :title="movie.title+' on IMDb.com'" /></a>
+    <section v-else>
+      <div class="row">
+        <div class="col-md-5 movie-detail">
+          <a :href="movie.IMDb_page_URI" target="_blank"><img :src="movie.IMDb_poster_URI" width="" height="" :alt="movie.title+' on IMDb.com'" :title="movie.title+' on IMDb.com'" /></a>
         </div>
         <div class="col-md-7">
           <h2>
@@ -26,7 +23,6 @@
           <hr />
           <router-link :to="{name: 'home'}"><button class="btn btn-danger float-right align-bottom">Back to Movie List</button></router-link>
         </div>
-
       </div>
     </section>
   </section>
@@ -67,4 +63,8 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss" rel="stylesheet/scss">
+  .movie-detail img {
+    max-width: 100%;
+    max-height: 600px;
+  }
 </style>

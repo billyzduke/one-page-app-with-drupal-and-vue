@@ -5,17 +5,14 @@
       <p>We're sorry, we're not able to retrieve this information at the moment, please try back later</p>
     </section>
 
-    <section v-else>
-      <div v-if="loading">
-        <div class="spinner">
-          <div class="bounce1"></div>
-          <div class="bounce2"></div>
-          <div class="bounce3"></div>
-        </div>
+    <section v-else-if="loading">
+      <div>
+        <loading-spinner />
       </div>
+    </section>
 
-      <div v-else>
-
+    <section v-else>
+      <div>
         <div class="filter">
           <input type="text" class="form-control" v-model="liveFilter" placeholder="Search">
           <h5>Filter by Genre:</h5>
@@ -30,10 +27,10 @@
         </div>
 
         <div v-for="movie in moviesFiltered" :key="movie.nid" class="row movie-item">
-          <div class="col-md-2 pull">
+          <div class="col-md-3 pull">
             <!-- <a :href="movie.IMDb_page_URI" target="_blank"><img :src="movie.IMDb_poster_URI" width="100" :alt="movie.title" :title="movie.title" /></a> -->
             <!-- <a @click="viewMovie(i)"><img :src="movie.IMDb_poster_URI" width="100" :alt="movie.title" :title="movie.title" /></a> -->
-            <router-link :to="{name: 'movie', params: {mid: movie.nid}}"><img :src="movie.IMDb_poster_URI" width="100" :alt="movie.title" :title="movie.title" /></router-link>
+            <router-link :to="{name: 'movie', params: {mid: movie.nid}}"><img :src="movie.IMDb_poster_URI" width="" height="" :alt="movie.title" :title="movie.title" /></router-link>
           </div>
           <div class="col-md-9">
             <!-- <h4><a :href="movie.IMDb_page_URI" target="_blank">{{ movie.title }}</h4> -->
@@ -61,7 +58,6 @@
             </p>
           </div>
         </div>
-
       </div>
     </section>
 
@@ -177,7 +173,28 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss" rel="stylesheet/scss">
-  .filter h5 {
-    margin-top: 0.8rem
+  .movie-item {
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 20px;
+    padding: 10px;
+
+    img {
+      max-width: 100%;
+      max-height: 300px;
+      height: auto
+    }
+
+    h4 {
+      margin-top: 0
+    }
+  }
+  .filter {
+    padding: 40px;
+    background: #efefef;
+    margin-bottom: 40px;
+
+    h5 {
+      margin-top: 0.8rem
+    }
   }
 </style>
