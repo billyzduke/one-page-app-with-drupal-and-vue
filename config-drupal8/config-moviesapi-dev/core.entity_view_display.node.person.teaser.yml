@@ -1,0 +1,67 @@
+uuid: 27c7d347-cc31-4837-9021-5953f2a1ecab
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.person.body
+    - field.field.node.person.field_imdb_name_page
+    - field.field.node.person.field_name_first
+    - field.field.node.person.field_name_last
+    - field.field.node.person.field_name_middle
+    - node.type.person
+  module:
+    - field_layout
+    - layout_builder
+    - layout_discovery
+    - text
+    - user
+third_party_settings:
+  field_layout:
+    id: layout_onecol
+    settings: {  }
+  layout_builder:
+    sections:
+      -
+        layout_id: layout_onecol
+        layout_settings: {  }
+        components:
+          448c1040-b485-4f1b-a0e2-35525dec08be:
+            uuid: 448c1040-b485-4f1b-a0e2-35525dec08be
+            region: content
+            configuration:
+              id: 'field_block:node:person:body'
+              label_display: ''
+              formatter:
+                label: hidden
+                type: text_summary_or_trimmed
+                settings:
+                  trim_length: 600
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+            additional: {  }
+            weight: 0
+id: node.person.teaser
+targetEntityType: node
+bundle: person
+mode: teaser
+content:
+  body:
+    label: hidden
+    type: text_summary_or_trimmed
+    weight: 101
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+    region: content
+  links:
+    weight: 100
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  field_imdb_name_page: true
+  field_name_first: true
+  field_name_last: true
+  field_name_middle: true

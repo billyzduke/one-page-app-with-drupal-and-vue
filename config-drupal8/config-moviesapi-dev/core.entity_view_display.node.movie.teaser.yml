@@ -1,0 +1,86 @@
+uuid: 626260b0-08e8-44ff-a7d4-ebb6a6984491
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.movie.body
+    - field.field.node.movie.field_cast
+    - field.field.node.movie.field_directors
+    - field.field.node.movie.field_genres
+    - field.field.node.movie.field_imdb_title_page
+    - field.field.node.movie.field_poster
+    - node.type.movie
+  module:
+    - field_layout
+    - layout_builder
+    - layout_discovery
+    - text
+    - user
+third_party_settings:
+  field_layout:
+    id: layout_onecol
+    settings: {  }
+  layout_builder:
+    sections:
+      -
+        layout_id: layout_onecol
+        layout_settings: {  }
+        components:
+          029ca051-c829-483a-8191-bb173dae0ddb:
+            uuid: 029ca051-c829-483a-8191-bb173dae0ddb
+            region: content
+            configuration:
+              id: 'field_block:node:movie:body'
+              label_display: ''
+              formatter:
+                label: hidden
+                type: text_summary_or_trimmed
+                settings:
+                  trim_length: 600
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+            additional: {  }
+            weight: 1
+          6607d21d-e04b-46d1-9511-274e24442d76:
+            uuid: 6607d21d-e04b-46d1-9511-274e24442d76
+            region: content
+            configuration:
+              id: 'field_block:node:movie:field_poster'
+              label: Poster
+              provider: layout_builder
+              label_display: '0'
+              formatter:
+                label: hidden
+                type: remote_image
+                settings: {  }
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+            additional: {  }
+            weight: 0
+id: node.movie.teaser
+targetEntityType: node
+bundle: movie
+mode: teaser
+content:
+  body:
+    label: hidden
+    type: text_summary_or_trimmed
+    weight: 101
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+    region: content
+  links:
+    weight: 100
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  field_cast: true
+  field_directors: true
+  field_genres: true
+  field_imdb_title_page: true
+  field_poster: true

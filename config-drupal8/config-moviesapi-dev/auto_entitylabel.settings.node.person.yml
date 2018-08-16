@@ -1,0 +1,7 @@
+status: '1'
+pattern: '<?php echo preg_replace(''!\s+!'', '' '', ''[node:field_name_first] [node:field_name_middle] [node:field_name_last]''); ?>'
+php: 1
+escape: 1
+dependencies:
+  config:
+    - node.type.person

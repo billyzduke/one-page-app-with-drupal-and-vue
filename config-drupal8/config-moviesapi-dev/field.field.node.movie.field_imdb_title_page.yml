@@ -1,0 +1,23 @@
+uuid: de3fce8d-27e9-4b08-a657-a5f41dc6a914
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_imdb_title_page
+    - node.type.movie
+  module:
+    - link
+id: node.movie.field_imdb_title_page
+field_name: field_imdb_title_page
+entity_type: node
+bundle: movie
+label: 'IMDb Page'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  link_type: 16
+  title: 0
+field_type: link

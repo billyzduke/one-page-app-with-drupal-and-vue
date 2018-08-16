@@ -1,0 +1,120 @@
+uuid: d10492fa-2d28-4f75-9d68-311046167b7a
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.full
+    - field.field.node.person.body
+    - field.field.node.person.field_imdb_name_page
+    - field.field.node.person.field_name_first
+    - field.field.node.person.field_name_last
+    - field.field.node.person.field_name_middle
+    - node.type.person
+  module:
+    - field_layout
+    - layout_builder
+    - layout_discovery
+    - link
+    - text
+    - user
+third_party_settings:
+  field_layout:
+    id: layout_onecol
+    settings: {  }
+  layout_builder:
+    sections:
+      -
+        layout_id: layout_onecol
+        layout_settings: {  }
+        components:
+          b5890bff-a881-48a0-8154-6bdc1fd3c537:
+            uuid: b5890bff-a881-48a0-8154-6bdc1fd3c537
+            region: content
+            configuration:
+              id: 'field_block:node:person:body'
+              label_display: ''
+              formatter:
+                label: hidden
+                type: text_default
+                settings: {  }
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+            additional: {  }
+            weight: 1
+          bd6ce711-d053-4c29-8176-951e041031e5:
+            uuid: bd6ce711-d053-4c29-8176-951e041031e5
+            region: content
+            configuration:
+              id: 'field_block:node:person:field_imdb_name_page'
+              label: 'IMDb Page'
+              provider: layout_builder
+              label_display: '0'
+              formatter:
+                label: hidden
+                type: link
+                settings:
+                  trim_length: 80
+                  url_only: false
+                  url_plain: false
+                  rel: '0'
+                  target: '0'
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+            additional: {  }
+            weight: 0
+id: node.person.full
+targetEntityType: node
+bundle: person
+mode: full
+content:
+  body:
+    label: hidden
+    type: text_default
+    weight: 101
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  field_imdb_name_page:
+    weight: 105
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    type: link
+    region: content
+  field_name_first:
+    weight: 102
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_name_last:
+    weight: 104
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_name_middle:
+    weight: 103
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  links:
+    weight: 100
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden: {  }

@@ -1,0 +1,23 @@
+uuid: 929ead01-806a-4ab5-af7a-55b499f8a401
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_imdb_name_page
+    - node.type.person
+  module:
+    - link
+id: node.person.field_imdb_name_page
+field_name: field_imdb_name_page
+entity_type: node
+bundle: person
+label: 'IMDb Page'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  link_type: 16
+  title: 0
+field_type: link

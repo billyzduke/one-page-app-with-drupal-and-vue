@@ -1,0 +1,26 @@
+uuid: a6e53d04-8b52-454c-952d-459985469f2f
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_poster
+    - node.type.movie
+  module:
+    - remote_image
+id: node.movie.field_poster
+field_name: field_poster
+entity_type: node
+bundle: movie
+label: Poster
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  link_type: '16'
+  alt_field: 1
+  alt_field_required: 0
+  title_field: 1
+  title_field_required: 0
+field_type: remote_image

@@ -1,0 +1,19 @@
+uuid: f226d6a0-bd82-43b0-af5b-361df751137e
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_name_middle
+    - node.type.person
+id: node.person.field_name_middle
+field_name: field_name_middle
+entity_type: node
+bundle: person
+label: 'Middle Name'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

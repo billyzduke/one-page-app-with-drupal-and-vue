@@ -1,0 +1,19 @@
+uuid: 73be9f54-57d1-40ab-a914-5d5907f74f11
+langcode: en
+status: true
+dependencies:
+  module:
+    - link
+    - node
+id: node.field_imdb_title_page
+field_name: field_imdb_title_page
+entity_type: node
+type: link
+settings: {  }
+module: link
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

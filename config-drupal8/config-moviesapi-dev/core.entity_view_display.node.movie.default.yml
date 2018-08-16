@@ -1,0 +1,196 @@
+uuid: 96535b21-fb62-4713-82f7-ca3be76a6ef8
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.movie.body
+    - field.field.node.movie.field_cast
+    - field.field.node.movie.field_directors
+    - field.field.node.movie.field_genres
+    - field.field.node.movie.field_imdb_title_page
+    - field.field.node.movie.field_poster
+    - node.type.movie
+  module:
+    - field_layout
+    - layout_builder
+    - layout_discovery
+    - link
+    - remote_image
+    - text
+    - user
+third_party_settings:
+  field_layout:
+    id: layout_onecol
+    settings: {  }
+  layout_builder:
+    sections:
+      -
+        layout_id: layout_onecol
+        layout_settings: {  }
+        components:
+          64010f0f-52c8-4abf-8206-ea684320fb49:
+            uuid: 64010f0f-52c8-4abf-8206-ea684320fb49
+            region: content
+            configuration:
+              id: 'field_block:node:movie:body'
+              label_display: ''
+              formatter:
+                label: hidden
+                type: text_default
+                settings: {  }
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+            additional: {  }
+            weight: 4
+          c284298c-c94e-491e-a803-a7ee088ef20a:
+            uuid: c284298c-c94e-491e-a803-a7ee088ef20a
+            region: content
+            configuration:
+              id: 'field_block:node:movie:field_genres'
+              label: Genres
+              provider: layout_builder
+              label_display: '0'
+              formatter:
+                label: hidden
+                type: string
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+            additional: {  }
+            weight: 5
+          97044f30-8862-4d6a-bb6d-d96a6f9f5c4b:
+            uuid: 97044f30-8862-4d6a-bb6d-d96a6f9f5c4b
+            region: content
+            configuration:
+              id: 'field_block:node:movie:field_poster'
+              label: Poster
+              provider: layout_builder
+              label_display: '0'
+              formatter:
+                label: hidden
+                type: remote_image
+                settings: {  }
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+            additional: {  }
+            weight: 0
+          fbe307e8-902d-4ee3-a5ed-91954b851045:
+            uuid: fbe307e8-902d-4ee3-a5ed-91954b851045
+            region: content
+            configuration:
+              id: 'field_block:node:movie:field_directors'
+              label_display: ''
+              formatter:
+                label: above
+                settings:
+                  link: true
+                third_party_settings: {  }
+                type: entity_reference_label
+              context_mapping:
+                entity: layout_builder.entity
+            additional: {  }
+            weight: 2
+          7c175e50-67a4-4f55-ba3a-f2de96b1f1ee:
+            uuid: 7c175e50-67a4-4f55-ba3a-f2de96b1f1ee
+            region: content
+            configuration:
+              id: 'field_block:node:movie:field_cast'
+              label_display: ''
+              formatter:
+                label: above
+                settings:
+                  link: true
+                third_party_settings: {  }
+                type: entity_reference_label
+              context_mapping:
+                entity: layout_builder.entity
+            additional: {  }
+            weight: 3
+          e5bc1879-09d6-45ea-85f1-ba87bd7c4e60:
+            uuid: e5bc1879-09d6-45ea-85f1-ba87bd7c4e60
+            region: content
+            configuration:
+              id: 'field_block:node:movie:field_imdb_title_page'
+              label: 'IMDb Page'
+              provider: layout_builder
+              label_display: '0'
+              formatter:
+                label: hidden
+                type: link
+                settings:
+                  trim_length: 80
+                  url_only: false
+                  url_plain: false
+                  rel: '0'
+                  target: '0'
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+            additional: {  }
+            weight: 1
+    allow_custom: false
+id: node.movie.default
+targetEntityType: node
+bundle: movie
+mode: default
+content:
+  body:
+    label: hidden
+    type: text_default
+    weight: 101
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  field_cast:
+    weight: 106
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_directors:
+    weight: 105
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_genres:
+    weight: 102
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_imdb_title_page:
+    weight: 107
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    type: link
+    region: content
+  field_poster:
+    weight: 108
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: remote_image
+    region: content
+  links:
+    weight: 100
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden: {  }

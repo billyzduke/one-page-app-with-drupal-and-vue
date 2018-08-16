@@ -1,0 +1,74 @@
+uuid: f784cb4d-1e4b-4be3-9dcb-2d860dd994de
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.entity_browser_test.body
+    - field.field.node.entity_browser_test.field_files
+    - field.field.node.entity_browser_test.field_files1
+    - field.field.node.entity_browser_test.field_files_over_ajax
+    - field.field.node.entity_browser_test.field_image_browser
+    - field.field.node.entity_browser_test.field_nodes
+    - node.type.entity_browser_test
+  enforced:
+    module:
+      - entity_browser_example
+  module:
+    - field_layout
+    - layout_builder
+    - layout_discovery
+    - text
+    - user
+third_party_settings:
+  field_layout:
+    id: layout_onecol
+    settings: {  }
+  layout_builder:
+    sections:
+      -
+        layout_id: layout_onecol
+        layout_settings: {  }
+        components:
+          cb6cfbb0-1a53-4913-bc77-4d8311ed92fa:
+            uuid: cb6cfbb0-1a53-4913-bc77-4d8311ed92fa
+            region: content
+            configuration:
+              id: 'field_block:node:entity_browser_test:body'
+              label_display: ''
+              formatter:
+                label: hidden
+                type: text_summary_or_trimmed
+                settings:
+                  trim_length: 600
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+            additional: {  }
+            weight: 0
+_core:
+  default_config_hash: vu9Vq8OWfsOVQ6pAVqG1ez3LkA5f_7tsqthB7fJrRoI
+id: node.entity_browser_test.teaser
+targetEntityType: node
+bundle: entity_browser_test
+mode: teaser
+content:
+  body:
+    label: hidden
+    type: text_summary_or_trimmed
+    weight: 101
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+    region: content
+  links:
+    weight: 100
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  field_files: true
+  field_files1: true
+  field_files_over_ajax: true
+  field_image_browser: true
+  field_nodes: true

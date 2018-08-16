@@ -1,0 +1,19 @@
+uuid: 74b40242-a6e4-4f1b-90e1-168e6d6c0e4f
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - remote_image
+id: node.field_poster
+field_name: field_poster
+entity_type: node
+type: remote_image
+settings: {  }
+module: remote_image
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false
