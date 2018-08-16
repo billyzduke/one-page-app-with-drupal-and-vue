@@ -69,7 +69,7 @@ export default {
   name: 'MovieList',
   data () {
     return {
-      apiURL: 'http://drupal-8-5-4.dd:8683/api/movies',
+      apiURL: 'http://moviesapi.dev:8683/api/movies/',
       movies: [],
       genres: [],
       genreFilter: '',

@@ -33,7 +33,7 @@ export default {
   name: 'MovieDetail',
   data () {
     return {
-      apiURL: 'http://drupal-8-5-4.dd:8683/api/movies/',
+      apiURL: 'http://moviesapi.dev:8683/api/movies/',
       movie: false,
       loading: true,
       loadError: false
